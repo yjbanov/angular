@@ -204,8 +204,8 @@ class Opportunity extends RawEntity {
 }
 
 class Account extends RawEntity {
-  Int64 get accountId => this['accountId'];
-  set accountId(Int64 val) {
+  int get accountId => this['accountId'];
+  set accountId(int val) {
     this['accountId'] = val;
   }
 }

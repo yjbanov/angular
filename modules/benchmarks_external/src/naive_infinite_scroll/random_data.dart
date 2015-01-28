@@ -34,7 +34,7 @@ Opportunity generateOpportunity(int seed) {
 
 Account generateAccount(int seed) {
   return new Account()
-    ..accountId = new Int64(seed);
+    ..accountId = seed;
 }
 
 String generateName(int seed) {
