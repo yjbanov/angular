@@ -1,4 +1,4 @@
-import {isPresent} from 'angular2/src/facade/lang';
+import {isPresent, Math} from 'angular2/src/facade/lang';
 import {List, ListWrapper} from 'angular2/src/facade/collection';
 import {ChangeDetector, CHECK_ALWAYS, CHECK_ONCE, CHECKED, DETACHED} from './interfaces';
 
@@ -35,6 +35,10 @@ export class AbstractChangeDetector extends ChangeDetector {
   }
 
   _detectChanges(throwOnChange:boolean) {
+    Math.incCdCounter();
+    if (Math.getCdCounter() % 1000 == 0) {
+      print(`>>> CD counter: ${Math.getCdCounter()}`);
+    }
     if (this.mode === DETACHED || this.mode === CHECKED) return;
 
     this.detectChangesInRecords(throwOnChange);

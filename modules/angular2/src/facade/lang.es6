@@ -3,6 +3,8 @@ export {proxy} from 'rtts_assert/rtts_assert';
 export var Type = Function;
 export var Math = window.Math;
 
+export var cdCounter: int = 0;
+
 var assertionsEnabled_ = typeof assert !== 'undefined';
 
 var int;

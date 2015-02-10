@@ -3,10 +3,14 @@ library angular.core.facade.lang;
 export 'dart:core' show Type, RegExp;
 import 'dart:math' as math;
 
+int cdCounter = 0;
+
 class Math {
   static final _random = new math.Random();
   static int floor(num n) => n.floor();
   static double random() => _random.nextDouble();
+  static incCdCounter() => cdCounter++;
+  static getCdCounter() => cdCounter;
 }
 
 class FIELD {

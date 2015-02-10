@@ -4,6 +4,7 @@ environment:
 dependencies:
   angular2:
     path: ../angular2
+  observe: any
   browser: '>=0.10.0 <0.11.0'
 transformers:
 - $dart2js:
