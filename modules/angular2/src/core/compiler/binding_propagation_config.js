@@ -3,6 +3,8 @@ import {ChangeDetector, CHECK_ONCE, DETACHED, CHECK_ALWAYS} from 'angular2/chang
 export class BindingPropagationConfig {
   _cd:ChangeDetector;
 
+  get cd() { return this._cd; }
+
   constructor(cd:ChangeDetector) {
     this._cd = cd;
   }

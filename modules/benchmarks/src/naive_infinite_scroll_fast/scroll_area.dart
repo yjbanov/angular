@@ -6,6 +6,7 @@ import 'package:angular2/src/test_lib/benchmark_util.dart'
     show getIntParameter, bindAction;
 import 'package:angular2/angular2.dart'
     show Component, Template, TemplateConfig, ViewPort, Compiler;
+import 'package:angular2/src/core/compiler/binding_propagation_config.dart';
 import 'package:angular2/src/facade/async.dart' show PromiseWrapper;
 import 'package:angular2/src/facade/collection.dart'
     show ListWrapper, MapWrapper;
@@ -25,12 +26,17 @@ import './scroll_item.dart' show ScrollItemComponent;
 import 'package:angular2/directives.dart' show Foreach;
 
 class ScrollAreaComponent {
+  final BindingPropagationConfig bpc;
   List<Offering> _fullList;
   List<Offering> visibleItems;
   var scrollDivStyle;
   var paddingDiv;
   var innerDiv;
-  ScrollAreaComponent() {
+  int iStart = -1;
+  int iEnd = -1;
+
+  ScrollAreaComponent(this.bpc) {
+    bpc.shouldBePropagated();
     this._fullList = generateOfferings(ITEMS);
     this.visibleItems = [];
     this.scrollDivStyle = MapWrapper.createFromPairs([
@@ -54,8 +60,13 @@ class ScrollAreaComponent {
       }
       scrollTop = scrollDiv.scrollTop;
     }
-    var iStart = Math.floor(scrollTop / ITEM_HEIGHT);
-    var iEnd = Math.min(iStart + VISIBLE_ITEMS + 1, this._fullList.length);
+    var newStart = Math.floor(scrollTop / ITEM_HEIGHT);
+    var newEnd = Math.min(newStart + VISIBLE_ITEMS + 1, this._fullList.length);
+    if (newStart != iStart || newEnd != iEnd) {
+      bpc.shouldBePropagatedFromRoot();
+    }
+    iStart = newStart;
+    iEnd = newEnd;
     var padding = iStart * ITEM_HEIGHT;
     if (this.innerDiv != null) {
       this.innerDiv.style.setProperty('height', '''${HEIGHT - padding}px''');
@@ -68,10 +79,10 @@ class ScrollAreaComponent {
 }
 setupReflectorForScrollArea() {
   reflector.registerType(ScrollAreaComponent, {
-    'factory': () {
-      return new ScrollAreaComponent();
+    'factory': (bpc) {
+      return new ScrollAreaComponent(bpc);
     },
-    'parameters': [],
+    'parameters': [[BindingPropagationConfig]],
     'annotations': [
       new Component(
           selector: 'scroll-area',
@@ -83,7 +94,6 @@ setupReflectorForScrollArea() {
                        on-scroll=\"onScroll(\$event)\">
                       <div id=\"padding\"></div>
                       <div id=\"inner\">
-                          <div>{{visibleItems.length}}</div>
                           <scroll-item
                               template=\"foreach #item in visibleItems\"
                               [offering]=\"item\">

@@ -91,6 +91,7 @@ setupReflectorForApp() {
                   <button id=\"reset-btn\">Reset</button>
                 </div>
               </div>
+              <div>{{scrollAreas.length}}</div>
               <div template=\"if scrollAreas.length > 0\">
                 <p>Following tables are only here to add weight to the UI:</p>
                 <scroll-area template=\"foreach #scrollArea in scrollAreas\"></scroll-area>

@@ -111,6 +111,11 @@ class StageButtonsComponent extends HasStyle {
     this._offering.status = stage.name;
     this._computeStageButtons();
     bpc.shouldBePropagatedFromRoot();
+    var parent = bpc.cd;
+    while (parent != null) {
+      print('>>> parent mode: ${parent.mode}');
+      parent = parent.parent;
+    }
   }
   _computeStageButtons() {
     var disabled = true;

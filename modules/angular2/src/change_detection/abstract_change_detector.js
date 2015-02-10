@@ -1,6 +1,7 @@
 import {isPresent, Math} from 'angular2/src/facade/lang';
 import {List, ListWrapper} from 'angular2/src/facade/collection';
 import {ChangeDetector, CHECK_ALWAYS, CHECK_ONCE, CHECKED, DETACHED} from './interfaces';
+import {ChangeDetectionUtil} from './change_detection_util';
 
 export class AbstractChangeDetector extends ChangeDetector {
   children:List;
@@ -34,11 +35,15 @@ export class AbstractChangeDetector extends ChangeDetector {
     this._detectChanges(true);
   }
 
+  markPathToRootAsCheckOnce() {
+    ChangeDetectionUtil.markPathToRootAsCheckOnce(this);
+  }
+
   _detectChanges(throwOnChange:boolean) {
-    Math.incCdCounter();
-    if (Math.getCdCounter() % 1000 == 0) {
-      print(`>>> CD counter: ${Math.getCdCounter()}`);
-    }
+    // Math.incCdCounter();
+    // if (Math.getCdCounter() % 1000 == 0) {
+    //   print(`>>> CD counter: ${Math.getCdCounter()}`);
+    // }
     if (this.mode === DETACHED || this.mode === CHECKED) return;
 
     this.detectChangesInRecords(throwOnChange);
